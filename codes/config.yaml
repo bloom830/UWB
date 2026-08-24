@@ -1,0 +1,23 @@
+# 路径配置
+DATA_ROOT: "G:\\Lai\\UWB_3.0\\data\\Uwb_Traindata"
+LOG_DIR: "training_logs/26-07-16train（1t+1f+1p）"
+
+# 训练超参数
+BATCH_SIZE: 16
+LEARNING_RATE: 0.0001
+EPOCHS: 150
+GRAD_CLIP: 5.0  # 针对窄脉冲训练，梯度裁剪至关重要
+
+# 方案 A 专用参数 (8GHz 采样率)
+MODEL:
+  win: 128      # 16ns 窗口 (低SNR优化：更大窗口提供更好频率分辨率)
+  hop: 32       # 4ns 帧移 (低SNR优化：减少频谱泄露)
+  ch_dim: 48   # 卷积通道数 (增强：32→48)
+  num_layer: 6  # 深度 (增强：4→6)
+  depth: 4      # DenseBlock 深度 (增强：3→4)
+
+# 损失函数权重分布
+LOSS:
+  time_weight: 1.0  # 时域 MAE 权重 (保持极性)
+  freq_weight: 1.0  # 频域 STFT 权重 (压制白噪声)
+  peak_weight: 1  # 峰值幅值权重 (防止窄脉冲消失)
